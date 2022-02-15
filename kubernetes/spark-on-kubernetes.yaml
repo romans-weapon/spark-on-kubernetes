@@ -1,4 +1,4 @@
-## Creating services for spark-master.sh and spark-web-ui
+## Creating services for spark-master and spark-web-ui
 kind: Service
 apiVersion: v1
 metadata:
