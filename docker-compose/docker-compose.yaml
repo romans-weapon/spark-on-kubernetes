@@ -1,0 +1,23 @@
+version: '3'
+services:
+  spark-master:
+    image: spearframework/spark-2.4.7:kubernetes
+    ports:
+      - 7077:7077
+      - 8080:8080
+    command: ["/bin/sh","/spark-master"]
+    deploy:
+      replicas: 1
+      resources:
+        reservations:
+          cpus: '100m'
+  spark-worker:
+    image: spearframework/spark-2.4.7:kubernetes
+    ports:
+        - 8081:8081
+    command: [ "/bin/sh","/spark-worker" ]
+    deploy:
+      replicas: 3
+      resources:
+        reservations:
+          cpus: '100m'
