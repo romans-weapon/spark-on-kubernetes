@@ -1,6 +1,13 @@
 # spark-on-kubernetes
-A faster spark setup on  any kubernetes cluster.
+A faster way to setup spark-standalone on a docker environment or any kubernetes cluster.
 
+# Pre-requisites
+
+For running spark-standalone you simply place a compiled version of Spark on each node on the cluster.The installation steps were taken from the [official documentation](https://spark.apache.org/docs/latest/spark-standalone.html#spark-standalone-mode)
+and containerized for running it on a docker environment or Kubernetes environment.
+To install spark on any of these environments we need to have:
+1. docker and docker-compose installed on your machine.
+2. Kubernetes cluster installed on your if you want to install spark on kubernetes.
 
 # Versions support
 
@@ -9,7 +16,7 @@ A faster spark setup on  any kubernetes cluster.
 | Spark        | 2.4.7       |
 | Hadoop       | 2.10.1      |
 
-# Steps to setup
+# Installation steps
 
 ## Run spark on docker containers using docker-compose
 1. Clone the project abd navigate to the main directory
@@ -17,13 +24,61 @@ A faster spark setup on  any kubernetes cluster.
 git clone -b spark-2.4 https://github.com/romans-weapon/spark-on-kubernetes.git && cd spark-on-kubernetes/
 ```
 
-2. Run the script file
+2. Run the script file to setup spark using docker-compose with the below command
 ```commandline
 sh spark-docker-setup.sh
 ```
 
+##### Output:
+
+```commandline
+kmaster@ubuntu:~/spark-on-kubernetes$ sh spark-docker-setup.sh
+[Wed Feb 16 02:36:38 AM PST 2022]        INFO:[+]Deploying spark onto docker env                        [started]
+[Wed Feb 16 02:36:38 AM PST 2022]        INFO:[+]Starting containers for spark master and worker        [started]
+Creating network "docker-compose_default" with the default driver
+Creating spark-master ... done
+Creating spark-worker_2 ... done
+Creating spark-worker_1 ... done
+[Wed Feb 16 02:36:52 AM PST 2022]        INFO:[+]Starting containers for spark master and worker        [success]
+[Wed Feb 16 02:36:52 AM PST 2022]        INFO:[+]Deploying spark onto docker env                        [success]
+```
+
 ### How to use it
 
+1. Once spark deployment is successful as shown above,check whether your containers are up and running as shown below
+
+```commandline
+kmaster@ubuntu:~/spark-on-kubernetes$ docker ps
+CONTAINER ID   IMAGE                                 COMMAND                  CREATED          STATUS          PORTS                                                                                  NAMES
+6d385f3290a7   spearframework/spark-2.4:kubernetes   "/bin/sh /spark-work…"   24 seconds ago   Up 22 seconds   0.0.0.0:8081->8081/tcp, :::8081->8081/tcp                                              spark-worker_1
+60a16c12e1d9   spearframework/spark-2.4:kubernetes   "/bin/sh /spark-work…"   24 seconds ago   Up 22 seconds   0.0.0.0:8082->8082/tcp, :::8082->8082/tcp                                              spark-worker_2
+3faca27d35bc   spearframework/spark-2.4:kubernetes   "/bin/sh /spark-mast…"   25 seconds ago   Up 23 seconds   0.0.0.0:7077->7077/tcp, :::7077->7077/tcp, 0.0.0.0:8080->8080/tcp, :::8080->8080/tcp   spark-master
+```
+
+2. Once they are healthy and running, you can exec into any of the worker nodes and start running spark as shown below
+
+```commandline
+kmaster@ubuntu:~/spark-on-kubernetes$ docker exec -it spark-worker_1 bash
+root@6d385f3290a7:/# spark-shell
+Using Spark's default log4j profile: org/apache/spark/log4j-defaults.properties
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+Spark context Web UI available at http://6d385f3290a7:4040
+Spark context available as 'sc' (master = spark://spark-master:7077, app id = app-20220216103753-0000).
+Spark session available as 'spark'.
+Welcome to
+      ____              __
+     / __/__  ___ _____/ /__
+    _\ \/ _ \/ _ `/ __/  '_/
+   /___/ .__/\_,_/_/ /_/\_\   version 2.4.7
+      /_/
+
+Using Scala version 2.11.12 (OpenJDK 64-Bit Server VM, Java 1.8.0_111)
+Type in expressions to have them evaluated.
+Type :help for more information.
+
+scala>
+```
 
 ## Run spark on any kubernetes cluster 
 
@@ -38,3 +93,5 @@ sh spark-kubernetes-setup.sh
 
 ### How to use it
 
+
+    

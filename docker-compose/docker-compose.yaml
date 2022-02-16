@@ -2,22 +2,28 @@ version: '3'
 services:
   spark-master:
     image: spearframework/spark-2.4:kubernetes
+    container_name: spark-master
+    restart: always
     ports:
       - 7077:7077
       - 8080:8080
     command: ["/bin/sh","/spark-master"]
-    deploy:
-      replicas: 1
-      resources:
-        reservations:
-          cpus: '100m'
-  spark-worker:
+  spark-worker_1:
     image: spearframework/spark-2.4:kubernetes
+    container_name: spark-worker_1
+    restart: always
     ports:
         - 8081:8081
     command: [ "/bin/sh","/spark-worker" ]
-    deploy:
-      replicas: 3
-      resources:
-        reservations:
-          cpus: '100m'
+    depends_on:
+      - spark-master
+  spark-worker_2:
+    image: spearframework/spark-2.4:kubernetes
+    container_name: spark-worker_2
+    restart: always
+    ports:
+      - 8082:8082
+    command: [ "/bin/sh","/spark-worker" ]
+    depends_on:
+      - spark-master
+
