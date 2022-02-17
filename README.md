@@ -1,4 +1,8 @@
 # Spark-on-kubernetes
+
+[![Code Quality Grade](https://api.codiga.io/project/31364/score/svg)](https://api.codiga.io/project/31364/score/svg)
+[![Code Quality Score](https://api.codiga.io/project/31364/status/svg)](https://api.codiga.io/project/31364/status/svg)
+
 A faster way to setup spark-standalone on a docker environment or any kubernetes cluster.
 
 # Table of contents
@@ -26,8 +30,8 @@ To install spark on any of these environments we need to have:
 
 | Service      | Version     |
 | -----------  | ----------- |
-| Spark        | 2.4.7       |
-| Hadoop       | 2.10.1      |
+| Spark        | 3.2.0       |
+| Hadoop       | 3.1.1       |
 
 # Installation steps
 
@@ -35,7 +39,7 @@ To install spark on any of these environments we need to have:
 ### Steps to run spark using docker-compose
 1. Clone the project abd navigate to the main directory
 ```commandline
-git clone -b spark-2.4 https://github.com/romans-weapon/spark-on-kubernetes.git && cd spark-on-kubernetes/
+git clone -b spark-3.2 https://github.com/romans-weapon/spark-on-kubernetes.git && cd spark-on-kubernetes/
 ```
 
 2. Run the script file to setup spark using docker-compose with the below command
@@ -64,9 +68,9 @@ Creating spark-worker_1 ... done
 ```commandline
 kmaster@ubuntu:~/spark-on-kubernetes$ docker ps
 CONTAINER ID   IMAGE                                 COMMAND                  CREATED          STATUS          PORTS                                                                                  NAMES
-6d385f3290a7   spearframework/spark-2.4:kubernetes   "/bin/sh /spark-work…"   24 seconds ago   Up 22 seconds   0.0.0.0:8081->8081/tcp, :::8081->8081/tcp                                              spark-worker_1
-60a16c12e1d9   spearframework/spark-2.4:kubernetes   "/bin/sh /spark-work…"   24 seconds ago   Up 22 seconds   0.0.0.0:8082->8082/tcp, :::8082->8082/tcp                                              spark-worker_2
-3faca27d35bc   spearframework/spark-2.4:kubernetes   "/bin/sh /spark-mast…"   25 seconds ago   Up 23 seconds   0.0.0.0:7077->7077/tcp, :::7077->7077/tcp, 0.0.0.0:8080->8080/tcp, :::8080->8080/tcp   spark-master
+6d385f3290a7   spearframework/spark-3.2:kubernetes   "/bin/sh /spark-work…"   24 seconds ago   Up 22 seconds   0.0.0.0:8081->8081/tcp, :::8081->8081/tcp                                              spark-worker_1
+60a16c12e1d9   spearframework/spark-3.2:kubernetes   "/bin/sh /spark-work…"   24 seconds ago   Up 22 seconds   0.0.0.0:8082->8082/tcp, :::8082->8082/tcp                                              spark-worker_2
+3faca27d35bc   spearframework/spark-3.2:kubernetes   "/bin/sh /spark-mast…"   25 seconds ago   Up 23 seconds   0.0.0.0:7077->7077/tcp, :::7077->7077/tcp, 0.0.0.0:8080->8080/tcp, :::8080->8080/tcp   spark-master
 ```
 
 2. Once they are healthy and running, you can exec into any of the worker nodes and start running spark as shown below
@@ -77,17 +81,17 @@ root@6d385f3290a7:/# spark-shell
 Using Spark's default log4j profile: org/apache/spark/log4j-defaults.properties
 Setting default log level to "WARN".
 To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
-Spark context Web UI available at http://6d385f3290a7:4040
-Spark context available as 'sc' (master = spark://spark-master:7077, app id = app-20220216103753-0000).
+Spark context Web UI available at http://10.111.14.20:4040
+Spark context available as 'sc' (master = spark://spark-master:7077, app id = app-20220217094729-0000).
 Spark session available as 'spark'.
 Welcome to
       ____              __
      / __/__  ___ _____/ /__
     _\ \/ _ \/ _ `/ __/  '_/
-   /___/ .__/\_,_/_/ /_/\_\   version 2.4.7
+   /___/ .__/\_,_/_/ /_/\_\   version 3.2.0
       /_/
 
-Using Scala version 2.11.12 (OpenJDK 64-Bit Server VM, Java 1.8.0_111)
+Using Scala version 2.12.15 (OpenJDK 64-Bit Server VM, Java 1.8.0_111)
 Type in expressions to have them evaluated.
 Type :help for more information.
 
@@ -98,7 +102,7 @@ scala>
 ### Steps to run spark on any kubernetes cluster
 
 ```commandline
-git clone -b spark-2.4 https://github.com/romans-weapon/spark-on-kubernetes.git && cd spark-on-kubernetes/
+git clone -b spark-3.2 https://github.com/romans-weapon/spark-on-kubernetes.git && cd spark-on-kubernetes/
 ```
 
 2. Run the script file
@@ -110,35 +114,33 @@ Below is what you see when you run the script mentioned above
 
 ```commandline
 kmaster@ubuntu:~/spark-on-kubernetes$ sh spark-kubernetes-setup.sh
-[Wed Feb 16 07:16:41 PM PST 2022]        INFO:[+]Deploying spark-standalone onto kubernetes cluster    [started]
-[Wed Feb 16 07:16:41 PM PST 2022]        INFO:[+]Creating namespace for spark                          [started]
+[Thu Feb 17 01:46:01 AM PST 2022]        INFO:[+]Deploying spark-standalone onto kubernetes cluster    [started]
+[Thu Feb 17 01:46:01 AM PST 2022]        INFO:[+]Creating namespace for spark         [started]
 namespace/spark-cluster created
-[Wed Feb 16 07:16:42 PM PST 2022]        INFO:[+]Creating namespace for spark                          [success]
-[Wed Feb 16 07:16:42 PM PST 2022]        INFO:[+]Spark master and worker deployment                    [started]
+[Thu Feb 17 01:46:01 AM PST 2022]        INFO:[+]Creating namespace for spark         [success]
+[Thu Feb 17 01:46:01 AM PST 2022]        INFO:[+]Spark master and worker deployment         [started]
+deployment.apps/spark-master-deploy created
 service/spark-master created
 service/spark-webui created
-deployment.apps/spark-master-deploy created
 deployment.apps/spark-worker-deploy created
-[Wed Feb 16 07:16:52 PM PST 2022]        INFO:[+]Spark master and worker deployment                    [success]
+[Thu Feb 17 01:46:12 AM PST 2022]        INFO:[+]Spark master and worker deployment         [success]
 NAME                                       READY   STATUS    RESTARTS   AGE
-pod/spark-master-deploy-5bb86d9bdd-r9m9k   1/1     Running   0          10s
-pod/spark-worker-deploy-6c8fcf4968-4zkg7   1/1     Running   0          10s
-pod/spark-worker-deploy-6c8fcf4968-trn59   1/1     Running   0          10s
-pod/spark-worker-deploy-6c8fcf4968-v27rd   1/1     Running   0          10s
+pod/spark-master-deploy-7f8db7cd79-25dxt   1/1     Running   0          45s
+pod/spark-worker-deploy-6dcf87f4fc-4v46c   1/1     Running   0          45s
+pod/spark-worker-deploy-6dcf87f4fc-9wb5h   1/1     Running   0          45s
+pod/spark-worker-deploy-6dcf87f4fc-cmlk2   1/1     Running   0          45s
 
 NAME                   TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
-service/spark-master   ClusterIP   10.245.120.133   <none>        7077/TCP   11s
-service/spark-webui    ClusterIP   10.245.69.153    <none>        8080/TCP   11s
+service/spark-master   ClusterIP   10.245.253.203   <none>        7077/TCP   45s
+service/spark-webui    ClusterIP   10.245.248.28    <none>        8080/TCP   45s
 
 NAME                                  READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/spark-master-deploy   1/1     1            1           11s
-deployment.apps/spark-worker-deploy   3/3     3            3           10s
+deployment.apps/spark-master-deploy   1/1     1            1           45s
+deployment.apps/spark-worker-deploy   3/3     3            3           45s
 
 NAME                                             DESIRED   CURRENT   READY   AGE
-replicaset.apps/spark-master-deploy-5bb86d9bdd   1         1         1       11s
-replicaset.apps/spark-worker-deploy-6c8fcf4968   3         3         3       10s
-[Wed Feb 16 07:16:53 PM PST 2022]        INFO:[+]Deploying spark onto kubernetes cluster    [success]
-kmaster@ubuntu:~/spark-on-kubernetes$
+replicaset.apps/spark-master-deploy-7f8db7cd79   1         1         1       45s
+replicaset.apps/spark-worker-deploy-6dcf87f4fc   3         3         3       45s
 ```
 
 ### How to use it
@@ -146,22 +148,22 @@ kmaster@ubuntu:~/spark-on-kubernetes$
 Once the above deployment is successful you can exec into any of the worker nodes and run your spark jobs as shown below
 
 ```commandline
-kmaster@ubuntu:~/spark-on-kubernetes$ kubectl exec -it spark-worker-deploy-6c8fcf4968-trn59 -n spark-cluster -- bash
-root@spark-worker-deploy-6c8fcf4968-trn59:/# spark-shell
+kmaster@ubuntu:~/spark-on-kubernetes$ k exec -it spark-worker-deploy-6dcf87f4fc-cmlk2 -n spark-cluster -- bash
+root@spark-worker-deploy-6dcf87f4fc-cmlk2:/# spark-shell
 Using Spark's default log4j profile: org/apache/spark/log4j-defaults.properties
 Setting default log level to "WARN".
 To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
-Spark context Web UI available at http://spark-worker-deploy-6c8fcf4968-trn59:4040
-Spark context available as 'sc' (master = spark://spark-master:7077, app id = app-20220217054900-0000).
+Spark context Web UI available at http://spark-worker-deploy-6dcf87f4fc-cmlk2:4040
+Spark context available as 'sc' (master = spark://spark-master:7077, app id = app-20220217094729-0000).
 Spark session available as 'spark'.
 Welcome to
       ____              __
      / __/__  ___ _____/ /__
     _\ \/ _ \/ _ `/ __/  '_/
-   /___/ .__/\_,_/_/ /_/\_\   version 2.4.7
+   /___/ .__/\_,_/_/ /_/\_\   version 3.2.0
       /_/
 
-Using Scala version 2.11.12 (OpenJDK 64-Bit Server VM, Java 1.8.0_111)
+Using Scala version 2.12.15 (OpenJDK 64-Bit Server VM, Java 1.8.0_111)
 Type in expressions to have them evaluated.
 Type :help for more information.
 

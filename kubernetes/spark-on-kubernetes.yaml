@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: spark-master
-          image: spearframework/spark-2.4:kubernetes
+          image: spearframework/spark-3.2:kubernetes
           command: [ "/bin/sh" ]
           args: [ "/spark-master" ]
           ports:
@@ -69,7 +69,7 @@ spec:
     spec:
       containers:
         - name: spark-worker
-          image: spearframework/spark-2.4:kubernetes
+          image: spearframework/spark-3.2:kubernetes
           command: [ "/bin/sh" ]
           args: ["/spark-worker"]
           ports:
