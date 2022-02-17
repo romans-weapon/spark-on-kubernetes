@@ -1,4 +1,8 @@
 # Spark-on-kubernetes
+
+[![Code Quality Grade](https://api.codiga.io/project/31364/score/svg)](https://api.codiga.io/project/31364/score/svg)
+[![Code Quality Score](https://api.codiga.io/project/31364/status/svg)](https://api.codiga.io/project/31364/status/svg)
+
 A faster way to setup spark-standalone on a docker environment or any kubernetes cluster.
 
 # Table of contents
