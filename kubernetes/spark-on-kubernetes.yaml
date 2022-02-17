@@ -1,31 +1,4 @@
-## Creating services for spark-master and spark-web-ui
-kind: Service
-apiVersion: v1
-metadata:
-  name: spark-master
-spec:
-  ports:
-    - port: 7077
-      targetPort: 7077
-  selector:
-    component: spark-master
-
----
-
-kind: Service
-apiVersion: v1
-metadata:
-  name: spark-webui
-  namespace: spark-cluster
-spec:
-  ports:
-    - port: 8080
-      targetPort: 8080
-  selector:
-    component: spark-master
-
----
-### creating Deployments for both master and worker for spark.Will create a master and 3 Workers by default
+### creating Deployments for both master and worker for spark.This Will create 1 master and 3 Workers by default
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -44,13 +17,40 @@ spec:
         - name: spark-master
           image: spearframework/spark-2.4:kubernetes
           command: [ "/bin/sh" ]
-          args: [ "/spark-worker" ]
+          args: [ "/spark-master" ]
           ports:
             - containerPort: 7077
             - containerPort: 8080
           resources:
             requests:
-              cpu: 100m
+              cpu: 200m
+
+---
+## Creating services for spark-master and spark-web-ui
+kind: Service
+apiVersion: v1
+metadata:
+  name: spark-master
+spec:
+  ports:
+    - port: 7077
+      targetPort: 7077
+  selector:
+    component: spark-master
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: spark-webui
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    component: spark-master
+
 
 ---
 apiVersion: apps/v1
@@ -74,6 +74,7 @@ spec:
           args: ["/spark-worker"]
           ports:
             - containerPort: 8081
+            - containerPort: 4040
           resources:
             requests:
-              cpu: 100m
+              cpu: 200m
