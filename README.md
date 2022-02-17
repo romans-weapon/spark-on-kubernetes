@@ -16,7 +16,7 @@ A faster way to setup spark-standalone on a docker environment or any kubernetes
     - [Kubernetes Environment](#kubernetes-environment)
         - [Steps to run spark on any kubernetes cluster](#steps-to-run-spark-on-any-kubernetes-cluster)
         - [How to use it](#how-to-use-it)
-    - [Web-ui](#web-ui)
+- [Web-ui](#web-ui)
     
 ## Pre-requisites
 
