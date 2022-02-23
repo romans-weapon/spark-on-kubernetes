@@ -1,7 +1,7 @@
 FROM java:openjdk-8-jdk
 
-ENV HADOOP_VERSION 2.10.1
-ENV SPARK_VERSION 2.4.7
+ENV HADOOP_VERSION 3.1.1
+ENV SPARK_VERSION 3.2.0
 
 RUN mkdir -p /opt && \
     cd /opt && \
